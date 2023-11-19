@@ -52,20 +52,18 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>5.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<groupId>com.redis.om</groupId>
+			<artifactId>redis-om-spring</artifactId>
+			<version>0.3.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>snapshots-repo</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
