@@ -264,5 +264,9 @@ fabric.properties
 hs_err_pid*
 replay_pid*
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,intellij,eclipse
 /target/
+=======
+# End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,intellij,eclipse
+>>>>>>> develop

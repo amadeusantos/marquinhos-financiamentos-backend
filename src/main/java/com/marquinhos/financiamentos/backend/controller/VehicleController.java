@@ -21,7 +21,7 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<?> getMarcas(@RequestParam String type){
+    public ResponseEntity<?> getBrand(@RequestParam String type){
         try{
             return ResponseEntity.ok(vehicleService.brands(type));
         } catch(VehicleException e){
@@ -30,10 +30,20 @@ public class VehicleController {
 
     }
 
-    @GetMapping("/modelo")
-    public ResponseEntity<?> modelo(@RequestParam String type, int codigo){
+    @GetMapping("/model")
+    public ResponseEntity<?> getModel(@RequestParam String type, int brandId){
         try{
-            return ResponseEntity.ok(vehicleService.modelos(type, codigo));
+            return ResponseEntity.ok(vehicleService.models(type, brandId));
+        } catch(VehicleException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/year")
+    public ResponseEntity<?> getYear(@RequestParam String type, int brandId, int yearId){
+        try{
+            return ResponseEntity.ok(vehicleService.years(type, brandId, yearId));
         } catch(VehicleException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

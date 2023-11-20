@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.marquinhos.financiamentos.backend.model.Brands;
+import com.marquinhos.financiamentos.backend.model.Models;
 import com.marquinhos.financiamentos.backend.model.Vehicle;
 import com.marquinhos.financiamentos.backend.util.exceptions.VehicleException;
 
@@ -20,7 +21,7 @@ public class VehicleService {
 	
 	private String url = "https://parallelum.com.br/fipe/api/v2/";
 	
-	public Brands[] brands(String type) throws VehicleException {
+	public Vehicle[] brands(String type) throws VehicleException {
 		RestTemplate restTemplate = new RestTemplate();
 
 		if(!checkType(type)){
@@ -28,18 +29,37 @@ public class VehicleService {
 		}
 
 		String urlMethod = url + type + "/brands";
-		Brands[] pedido = restTemplate.getForObject(urlMethod, Brands[].class);
+		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
 		return pedido;
 
 	}
 	
-	public String modelos(String type, int codigo) {
+	public Vehicle[] models(String type, int codigo) {
 		RestTemplate restTemplate = new RestTemplate();
-		String urlMethod = url + "/" + type + "/marcas/" + codigo + "/modelos";
-		ResponseEntity<Vehicle> pedido = restTemplate.getForEntity(urlMethod, Vehicle.class);
-		String responseBody = pedido.getBody();
-		return responseBody;		
+
+		if(!checkType(type)){
+			throw new VehicleException("This type is not valid");
+		}
+
+		String urlMethod = url +  type + "/brands/" + codigo + "/models";
+		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
+
+		return pedido;		
 		
+	}
+
+	public Vehicle[] years(String type, int brandId, int yearId){
+		RestTemplate restTemplate = new RestTemplate();
+
+		if(!checkType(type)){
+			throw new VehicleException("This type is not valid");
+		}
+
+		String urlMethod = url +  type + "/brands/" + brandId + "/models/" + yearId + "/years";
+		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
+
+		return pedido;	
+
 	}
 
 	public boolean checkType(String type){
