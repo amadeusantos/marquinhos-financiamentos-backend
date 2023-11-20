@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.marquinhos.financiamentos.backend.model.Brands;
-import com.marquinhos.financiamentos.backend.model.Models;
 import com.marquinhos.financiamentos.backend.model.Vehicle;
 import com.marquinhos.financiamentos.backend.util.exceptions.VehicleException;
 
