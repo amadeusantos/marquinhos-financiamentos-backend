@@ -12,4 +12,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ExceptionResponse(exception.getMessage()));
     }
 
+    @ExceptionHandler(FinancingException.class)
+    public ResponseEntity<ExceptionResponse> handleGenericFinancingException(FinancingException exception) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse(exception.getMessage()));
+    }
+
 }
