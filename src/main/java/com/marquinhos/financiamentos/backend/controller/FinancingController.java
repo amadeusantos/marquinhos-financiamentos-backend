@@ -20,9 +20,10 @@ public class FinancingController {
 
   @GetMapping
   public ResponseEntity<?> getFinancingValue(@RequestParam double amountFinanced,
-      int numberInstallments) {
+      int numberInstallments, double downPayment) {
     try {
-      return ResponseEntity.ok(financingService.calcFinancing(amountFinanced, numberInstallments));
+      return ResponseEntity.ok(financingService.calcFinancing(amountFinanced, numberInstallments,
+          downPayment));
     } catch (FinancingException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
