@@ -1,9 +1,6 @@
 package com.marquinhos.financiamentos.backend.service;
 
-import com.marquinhos.financiamentos.backend.model.Brand;
-import com.marquinhos.financiamentos.backend.model.Model;
-import com.marquinhos.financiamentos.backend.model.TypeEnum;
-import com.marquinhos.financiamentos.backend.model.Year;
+import com.marquinhos.financiamentos.backend.model.*;
 import com.marquinhos.financiamentos.backend.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,4 +42,7 @@ public class VehicleService {
     }
 
 
+    public Vehicle findVehicle(TypeEnum type, int brandId, int modelId, String year) {
+        return vehicleRepository.findVehicle(type, brandId, modelId, year);
+    }
 }

@@ -1,9 +1,7 @@
 package com.marquinhos.financiamentos.backend.repository;
 
-import com.marquinhos.financiamentos.backend.model.Brand;
-import com.marquinhos.financiamentos.backend.model.Model;
-import com.marquinhos.financiamentos.backend.model.TypeEnum;
-import com.marquinhos.financiamentos.backend.model.Year;
+import com.marquinhos.financiamentos.backend.model.*;
+import com.marquinhos.financiamentos.backend.util.exceptions.NotFoundException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -48,4 +46,12 @@ public class VehicleRepository {
 
     }
 
+    public Vehicle findVehicle(TypeEnum type, int brandId, int modelId, String year) {
+        try {
+            String urlMethod = URL + type.name().toLowerCase() + "/brands/" + brandId + "/models/" + modelId + "/years/" + year;
+            return restTemplate.getForObject(urlMethod, Vehicle.class);
+        } catch (Exception e) {
+            throw new NotFoundException("Vehicle not found");
+        }
+    }
 }
