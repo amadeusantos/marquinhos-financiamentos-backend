@@ -1,11 +1,12 @@
 package com.marquinhos.financiamentos.backend.service;
 
-import com.marquinhos.financiamentos.backend.model.*;
+import com.marquinhos.financiamentos.backend.model.Brand;
+import com.marquinhos.financiamentos.backend.model.Model;
+import com.marquinhos.financiamentos.backend.model.TypeEnum;
+import com.marquinhos.financiamentos.backend.model.Year;
 import com.marquinhos.financiamentos.backend.repository.VehicleRepository;
-import com.marquinhos.financiamentos.backend.util.exceptions.VehicleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +32,17 @@ public class VehicleService {
 
     }
 
-    public List<Model> filterModels(TypeEnum type, int marcaId, String name) {
-        Model[] vehicles = this.models(type, marcaId);
-        return Arrays.stream(vehicles)
-                .filter((vehicle -> vehicle.getName().toLowerCase().contains(name.toLowerCase()))).toList();
+    public List<Brand> filterBrands(TypeEnum type, String marca) {
+        Brand[] vehiclesBrands = brands(type);
+        return Arrays.stream(vehiclesBrands)
+                .filter((brand -> brand.getName().toLowerCase().contains(marca.toLowerCase()))).toList();
     }
+
+    public List<Model> filterModels(TypeEnum type, int marcaId, String name) {
+        Model[] vehiclesModels = this.models(type, marcaId);
+        return Arrays.stream(vehiclesModels)
+                .filter((model -> model.getName().toLowerCase().contains(name.toLowerCase()))).toList();
+    }
+
 
 }

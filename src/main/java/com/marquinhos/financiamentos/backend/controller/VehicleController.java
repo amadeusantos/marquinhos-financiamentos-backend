@@ -1,5 +1,6 @@
 package com.marquinhos.financiamentos.backend.controller;
 
+import com.marquinhos.financiamentos.backend.model.Brand;
 import com.marquinhos.financiamentos.backend.model.Model;
 import com.marquinhos.financiamentos.backend.model.TypeEnum;
 import com.marquinhos.financiamentos.backend.service.VehicleService;
@@ -36,11 +37,18 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.years(type, brandId, yearId));
     }
 
+    @GetMapping("/model/{type}/")
+    public ResponseEntity<List<Brand>> filterBrand(
+            @PathVariable TypeEnum type,
+            @RequestParam String marca) {
+        return ResponseEntity.ok(vehicleService.filterBrands(type, marca));
+    }
+
     @GetMapping("/model/{type}/{marcaId}")
     public ResponseEntity<List<Model>> filterModel(
             @PathVariable TypeEnum type,
             @PathVariable int marcaId,
-            @RequestParam(required = false) String name) {
+            @RequestParam String name) {
         return ResponseEntity.ok(vehicleService.filterModels(type, marcaId, name));
     }
 
