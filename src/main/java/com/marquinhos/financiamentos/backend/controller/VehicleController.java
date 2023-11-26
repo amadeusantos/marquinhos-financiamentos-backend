@@ -1,52 +1,55 @@
 package com.marquinhos.financiamentos.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.marquinhos.financiamentos.backend.model.Brand;
+import com.marquinhos.financiamentos.backend.model.Model;
+import com.marquinhos.financiamentos.backend.model.TypeEnum;
 import com.marquinhos.financiamentos.backend.service.VehicleService;
 import com.marquinhos.financiamentos.backend.util.exceptions.VehicleException;
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/vehicle")
+@CrossOrigin("*")
 public class VehicleController {
 
-    @Autowired
-    private VehicleService vehicleService;
+    private final VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<?> getBrand(@RequestParam String type){
-        try{
-            return ResponseEntity.ok(vehicleService.brands(type));
-        } catch(VehicleException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    public ResponseEntity<?> getBrand(@RequestParam TypeEnum type) {
+        return ResponseEntity.ok(vehicleService.brands(type));
     }
 
     @GetMapping("/model")
-    public ResponseEntity<?> getModel(@RequestParam String type, int brandId){
-        try{
-            return ResponseEntity.ok(vehicleService.models(type, brandId));
-        } catch(VehicleException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    public ResponseEntity<?> getModel(@RequestParam TypeEnum type, int brandId) {
+        return ResponseEntity.ok(vehicleService.models(type, brandId));
     }
 
     @GetMapping("/year")
-    public ResponseEntity<?> getYear(@RequestParam String type, int brandId, int yearId){
-        try{
-            return ResponseEntity.ok(vehicleService.years(type, brandId, yearId));
-        } catch(VehicleException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+    public ResponseEntity<?> getYear(@RequestParam TypeEnum type, int brandId, int yearId) {
+        return ResponseEntity.ok(vehicleService.years(type, brandId, yearId));
     }
+
+    @GetMapping("/model/{type}/")
+    public ResponseEntity<List<Brand>> filterBrand(
+            @PathVariable TypeEnum type,
+            @RequestParam String marca) {
+        return ResponseEntity.ok(vehicleService.filterBrands(type, marca));
+    }
+
+    @GetMapping("/model/{type}/{marcaId}")
+    public ResponseEntity<List<Model>> filterModel(
+            @PathVariable TypeEnum type,
+            @PathVariable int marcaId,
+            @RequestParam String name) {
+        return ResponseEntity.ok(vehicleService.filterModels(type, marcaId, name));
+    }
+
 }
