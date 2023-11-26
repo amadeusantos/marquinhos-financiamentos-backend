@@ -1,69 +1,48 @@
 package com.marquinhos.financiamentos.backend.service;
 
-import java.util.ArrayList;
+import com.marquinhos.financiamentos.backend.model.Brand;
+import com.marquinhos.financiamentos.backend.model.Model;
+import com.marquinhos.financiamentos.backend.model.TypeEnum;
+import com.marquinhos.financiamentos.backend.model.Year;
+import com.marquinhos.financiamentos.backend.repository.VehicleRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import com.marquinhos.financiamentos.backend.model.Vehicle;
-import com.marquinhos.financiamentos.backend.util.exceptions.VehicleException;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class VehicleService {
-	
-	private String url = "https://parallelum.com.br/fipe/api/v2/";
-	
-	public Vehicle[] brands(String type) throws VehicleException {
-		RestTemplate restTemplate = new RestTemplate();
 
-		if(!checkType(type)){
-			throw new VehicleException("This type is not valid");
-		}
+    private final VehicleRepository vehicleRepository;
 
-		String urlMethod = url + type + "/brands";
-		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
-		return pedido;
+    public Brand[] brands(TypeEnum type) {
+        return vehicleRepository.getBrands(type);
+    }
 
-	}
-	
-	public Vehicle[] models(String type, int codigo) {
-		RestTemplate restTemplate = new RestTemplate();
+    public Model[] models(TypeEnum type, int codigo) {
 
-		if(!checkType(type)){
-			throw new VehicleException("This type is not valid");
-		}
+        return vehicleRepository.getModels(type, codigo);
 
-		String urlMethod = url +  type + "/brands/" + codigo + "/models";
-		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
+    }
 
-		return pedido;		
-		
-	}
+    public Year[] years(TypeEnum type, int brandId, int yearId) {
+        return vehicleRepository.getYears(type, brandId, yearId);
 
-	public Vehicle[] years(String type, int brandId, int yearId){
-		RestTemplate restTemplate = new RestTemplate();
+    }
 
-		if(!checkType(type)){
-			throw new VehicleException("This type is not valid");
-		}
+    public List<Brand> filterBrands(TypeEnum type, String marca) {
+        Brand[] vehiclesBrands = brands(type);
+        return Arrays.stream(vehiclesBrands)
+                .filter((brand -> brand.getName().toLowerCase().contains(marca.toLowerCase()))).toList();
+    }
 
-		String urlMethod = url +  type + "/brands/" + brandId + "/models/" + yearId + "/years";
-		Vehicle[] pedido = restTemplate.getForObject(urlMethod, Vehicle[].class);
+    public List<Model> filterModels(TypeEnum type, int marcaId, String name) {
+        Model[] vehiclesModels = this.models(type, marcaId);
+        return Arrays.stream(vehiclesModels)
+                .filter((model -> model.getName().toLowerCase().contains(name.toLowerCase()))).toList();
+    }
 
-		return pedido;	
 
-	}
-
-	public boolean checkType(String type){
-		List<String> typeList = Arrays.asList("cars", "motorcycles", "trucks");
-		return typeList.contains(type);
-	}
-
-	
 }
