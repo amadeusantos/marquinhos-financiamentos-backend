@@ -22,4 +22,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ExceptionResponse("Accepted types are CARS, MOTORCYCLES and TRUCKS"));
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Void> handleNotFoundException() {
+        return ResponseEntity.notFound().build();
+    }
+
 }
